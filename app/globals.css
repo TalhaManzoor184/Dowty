@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #EEF1F5;
+  --card: #FFFFFF;
+  --accent: #E1432B;
+  --accent-dark: #1F5FA8;
+  --muted: #667085;
+  --border: rgba(15, 23, 42, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-bebas-neue);
+}
+
+body {
+  background: linear-gradient(135deg, #EEF1F5 0%, #E4E9F0 100%);
+  color: #1B1F27;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: #E1432B;
+  color: #EEF1F5;
+}
