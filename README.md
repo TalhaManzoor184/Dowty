@@ -31,5 +31,49 @@ npm run dev
 
 Works on Vercel out of the box (`next build` / `next start`). Any Node host
 that supports Next.js App Router API routes will work too — a fully static
-host will NOT work because `/youtube-video-downloader` depends on the server-side
-`/api/download` route.
+host will NOT work because `/youtube-video-downloader` and the proxy
+download depend on server-side API routes.
+
+### Deploying on cPanel (Node.js Selector / Passenger)
+
+Your host must support **Node.js apps** in cPanel (look for "Setup Node.js
+App" under Software). Plain static/PHP shared hosting without this feature
+cannot run this project — check with your host first, or use Vercel instead.
+
+1. **Upload the project** — zip everything except `node_modules` and `.next`,
+   upload via File Manager, then extract it into a folder (e.g.
+   `/home/yourcpaneluser/grokthumbnails`). Do **not** put it directly in
+   `public_html` — Node.js Selector manages its own document root.
+
+2. **Create the Node.js app** — cPanel → Setup Node.js App → Create Application:
+   - Node.js version: pick the highest available (20.x or newer)
+   - Application mode: Production
+   - Application root: the folder you uploaded to
+   - Application URL: your domain (e.g. grokthumbnails.com)
+   - Application startup file: `server.js`
+
+3. **Add the environment variable** — in the same screen, add:
+   - `RAPIDAPI_KEY` = your RapidAPI key
+
+4. **Install dependencies & build** — cPanel gives you a command to enter
+   the app's virtual environment, something like:
+   ```bash
+   source /home/yourcpaneluser/nodevenv/grokthumbnails/20/bin/activate
+   cd /home/yourcpaneluser/grokthumbnails
+   npm install
+   npm run build
+   ```
+   Run this via cPanel's **Terminal** (or SSH). The exact `source` command
+   is shown at the top of the Node.js App page — copy it from there.
+
+5. **Restart the app** — back in Setup Node.js App, click **Restart**.
+   Your site should now be live at your domain.
+
+**If something goes wrong:**
+- Check the app's log file (linked from the Setup Node.js App page) for errors.
+- `next build` needs enough memory — on very low-resource shared hosting it
+  can fail; building locally and uploading the resulting `.next` folder
+  (along with `node_modules` built for the *same* Node version/architecture
+  as the server) is a fallback, but building directly on the server is more
+  reliable.
+- Re-run `npm run build` any time you update the code, then Restart the app.

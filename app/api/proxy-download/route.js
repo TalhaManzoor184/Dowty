@@ -1,6 +1,12 @@
 // Streams a remote video file through our own server with
 // Content-Disposition: attachment, so the browser triggers a background
 // download instead of navigating the current page to a cross-origin URL.
+//
+// Edge Runtime is required on Vercel: the default Node.js serverless
+// runtime buffers the response body and enforces a small payload/time
+// limit, which fails for anything but tiny files. Edge Runtime streams
+// the body through directly.
+export const runtime = "edge";
 
 const ALLOWED_HOST_SUFFIXES = [
   "googlevideo.com",

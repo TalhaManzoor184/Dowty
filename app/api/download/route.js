@@ -14,7 +14,7 @@ export async function POST(req) {
       {
         method: "GET",
         headers: {
-         "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+          "x-rapidapi-key": process.env.RAPIDAPI_KEY,
           "x-rapidapi-host":
             "ytstream-download-youtube-videos.p.rapidapi.com",
           "Content-Type": "application/json",
